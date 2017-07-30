@@ -1,6 +1,6 @@
 # angular-oauth2-oidc
 
-Support for OAuth 2 and OpenId Connect (OIDC) in Angular.
+Support for OAuth 2, Azure B2C and OpenId Connect (OIDC) in Angular.
 
 ## Credits
 
@@ -40,7 +40,7 @@ import { OAuthModule } from 'angular-oauth2-oidc';
 [...]
 
 @NgModule({
-  imports: [ 
+  imports: [
     [...]
     HttpModule,
     OAuthModule.forRoot()
@@ -51,13 +51,13 @@ import { OAuthModule } from 'angular-oauth2-oidc';
     [...]
   ],
   bootstrap: [
-    AppComponent 
+    AppComponent
   ]
 })
 export class AppModule {
 }
 
-``` 
+```
 
 ## Using Implicit Flow
 
@@ -72,7 +72,7 @@ To configure the library you just have to set some properties on startup. For th
 export class AppComponent {
 
   constructor(private oauthService: OAuthService) {
-        
+
         // URL of the SPA to redirect the user to after login
         this.oauthService.redirectUri = window.location.origin + "/index.html";
 
@@ -93,14 +93,14 @@ export class AppComponent {
 
         // The name of the auth-server that has to be mentioned within the token
         this.oauthService.issuer = "https://steyer-identity-server.azurewebsites.net/identity";
-        
+
         // Load Discovery Document and then try to login the user
         this.oauthService.loadDiscoveryDocument().then(() => {
 
             // This method just tries to parse the token(s) within the url when
             // the auth-server redirects the user back to the web-app
             // It dosn't send the user the the login page
-            this.oauthService.tryLogin({});      
+            this.oauthService.tryLogin({});
 
         });
 
@@ -118,7 +118,7 @@ When you don't have a discovery document, you have to configure more properties 
 export class AppComponent {
 
   constructor(private oauthService: OAuthService) {
-        
+
         // Login-Url
         this.oauthService.loginUrl = "https://steyer-identity-server.azurewebsites.net/identity/connect/authorize"; //Id-Provider?
 
@@ -145,7 +145,7 @@ export class AppComponent {
         // This method just tries to parse the token(s) within the url when
         // the auth-server redirects the user back to the web-app
         // It dosn't send the user the the login page
-        this.oauthService.tryLogin({});      
+        this.oauthService.tryLogin({});
 
 
   }
@@ -160,27 +160,27 @@ import { Component } from '@angular/core';
 import { OAuthService } from 'angular2-oauth2/oauth-service';
 
 @Component({
-    templateUrl: "app/home.html" 
+    templateUrl: "app/home.html"
 })
 export class HomeComponent {
-    
+
     constructor(private oAuthService: OAuthService) {
     }
-    
+
     public login() {
         this.oAuthService.initImplicitFlow();
     }
-    
+
     public logoff() {
         this.oAuthService.logOut();
     }
-    
+
     public get name() {
         let claims = this.oAuthService.getIdentityClaims();
         if (!claims) return null;
-        return claims.given_name; 
+        return claims.given_name;
     }
-    
+
 }
 ```
 
@@ -207,14 +207,14 @@ export class HomeComponent {
 ### Validate id_token
 
 In cases where security relies on the id_token (e. g. in hybrid apps that use it to provide access to local resources)
-you could use the callback ``validationHandler`` to define the logic to validate the token's signature. 
+you could use the callback ``validationHandler`` to define the logic to validate the token's signature.
 The following sample uses the validation-endpoint of [IdentityServer3](https://github.com/IdentityServer/IdentityServer3) for this:
 
 ```
 this.oauthService.tryLogin({
     validationHandler: context => {
         var search = new URLSearchParams();
-        search.set('token', context.idToken); 
+        search.set('token', context.idToken);
         search.set('client_id', oauthService.clientId);
         return http.get(validationUrl, { search }).toPromise();
     }
@@ -235,7 +235,7 @@ var headers = new Headers({
 ### Callback after successful login
 
 There is a callback ``onTokenReceived``, that is called after a successful login. In this case, the lib received the access_token as
-well as the id_token, if it was requested. If there is an id_token, the lib validated it in view of it's claims 
+well as the id_token, if it was requested. If there is an id_token, the lib validated it in view of it's claims
 (aud, iss, nbf, exp, at_hash) and - if a ``validationHandler`` has been set up - with this ``validationHandler``, e. g. to validate
 the signature of the id_token.
 
@@ -245,13 +245,13 @@ this.oauthService.tryLogin({
         //
         // Output just for purpose of demonstration
         // Don't try this at home ... ;-)
-        // 
+        //
         console.debug("logged in");
         console.debug(context);
     },
     validationHandler: context => {
         var search = new URLSearchParams();
-        search.set('token', context.idToken); 
+        search.set('token', context.idToken);
         search.set('client_id', oauthService.clientId);
         return http.get(validationUrl, { search}).toPromise();
     }
@@ -273,7 +273,7 @@ Please not, that this configuation is quite similar to the one for the implcit f
 export class AppComponent {
 
   constructor(private oauthService: OAuthService) {
-      
+
         // The SPA's id. Register SPA with this id at the auth-server
         this.oauthService.clientId = "demo-resource-owner";
 
@@ -312,7 +312,7 @@ In cases where you don't have an OIDC based discovery document you have to confi
 export class AppComponent {
 
   constructor(private oauthService: OAuthService) {
-      
+
         // Login-Url
         //this.oauthService.loginUrl = "https://steyer-identity-server.azurewebsites.net/identity/connect/authorize"; //Id-Provider?
 
@@ -355,7 +355,7 @@ export class AppComponent {
 
 ```
 this.oauthService.fetchTokenUsingPasswordFlow('max', 'geheim').then((resp) => {
-          
+
       // Loading data about the user
       return this.oauthService.loadUserProfile();
 
@@ -363,8 +363,8 @@ this.oauthService.fetchTokenUsingPasswordFlow('max', 'geheim').then((resp) => {
 
       // Using the loaded user data
       let claims = this.oAuthService.getIdentityClaims();
-      if (claims) console.debug('given_name', claims.given_name); 
-  
+      if (claims) console.debug('given_name', claims.given_name);
+
 })
 ```
 
@@ -373,8 +373,8 @@ There is also a short form for fetching the token and loading the user profile:
 ```
 this.oauthService.fetchTokenUsingPasswordFlowAndLoadUserProfile('max', 'geheim').then(() => {
       let claims = this.oAuthService.getIdentityClaims();
-      if (claims) console.debug('given_name', claims.given_name); 
-});      
+      if (claims) console.debug('given_name', claims.given_name);
+});
 ```
 
 ## Refreshing the current Access Token
