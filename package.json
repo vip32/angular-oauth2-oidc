@@ -27,9 +27,9 @@
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "dependencies": {
-    "base64-js": "^1.2.0",
-    "js-base64": "^2.1.9",
-    "sha256": "^0.2.0"
+    "base64-js": "~1.2.0",
+    "js-base64": "~2.1.9",
+    "sha256": "~0.2.0"
   },
   "devDependencies": {
     "@angular/common": "^2.0.0",
