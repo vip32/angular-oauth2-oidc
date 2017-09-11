@@ -50,7 +50,7 @@ var OAuthService = (function () {
                 _this.discoveryDocumentLoadedSender.next(doc);
                 resolve(doc);
             }, function (err) {
-                console.error('error loading discovery document', err);
+                console.error('error loading dicovery document', err);
                 reject(err);
             });
         });
@@ -160,17 +160,17 @@ var OAuthService = (function () {
             if (that.oidc) {
                 url += "&nonce=" + encodeURIComponent(nonce);
             }
-            console.log('auth login url: ' + url);
+            console.log('auth login url: ', url); // VP
             return url;
         });
     };
-
+    ;
     OAuthService.prototype.initImplicitFlow = function (additionalState) {
         if (additionalState === void 0) { additionalState = ""; }
         this.createLoginUrl(additionalState).then(function (url) {
             url = url.replace('?response_type', '&response_type'); // URL fix by VP
-            console.log('login url: ' + url);
-            window.location.href = url;
+            console.log('login url: ', url);
+            location.href = url;
         })
             .catch(function (error) {
             console.error("Error in initImplicitFlow");
@@ -392,8 +392,8 @@ var OAuthService = (function () {
                 + encodeURIComponent(this.redirectUri);
         }
         logoutUrl = logoutUrl.replace('?id_token_hint', '&id_token_hint'); // URL fix by VP
-        console.log('logout url: ' + logoutUrl);
-        window.location.href = logoutUrl;
+        console.log('logout url: ', logoutUrl);
+        location.href = logoutUrl;
     };
     ;
     OAuthService.prototype.createAndSaveNonce = function () {
