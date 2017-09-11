@@ -1,10 +1,8 @@
 {
   "name": "angular-oauth2-oidc-b2c",
-  "version": "1.0.22",
+  "version": "1.0.23",
   "scripts": {
-    "lint": "tslint src/**/*.ts",
     "test": "tsc && karma start",
-    "prepublish": "ngc",
     "tsc": "tsc",
     "ngc": "ngc"
   },
@@ -25,7 +23,6 @@
     "url": "https://github.com/vip32/angular-oauth2-oidc-b2c/issues"
   },
   "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
   "dependencies": {
     "base64-js": "~1.2.0",
     "js-base64": "~2.1.9",
@@ -39,8 +36,6 @@
     "@angular/http": "^2.0.0",
     "@angular/platform-browser": "^2.0.0",
     "@angular/platform-server": "^2.4.1",
-    "@types/jasmine": "^2.5.40",
-    "@types/node": "^6.0.57",
     "codelyzer": "^0.0.28",
     "rxjs": "^5.0.1",
     "tslint": "^3.15.1",
